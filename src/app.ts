@@ -1,4 +1,7 @@
-import express, {Request, Response} from 'express'
+import 'dotenv/config'
+import "reflect-metadata"
+import express, { Request, Response } from 'express'
+import dataSource from "./dataSource";
 const app = express();
 
 app.get("/", (req: Request, res: Response) => {
@@ -6,6 +9,11 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 const PORT = 4000
-app.listen(PORT, () => {
-  console.log(`Server is listening on ${PORT}`)
+app.listen(PORT, async () => {
+  try {
+    await dataSource.initialize()
+    console.log(`DataSource connected. Server is listening on ${PORT}`)
+  } catch (error) {
+    console.log(error)
+  }
 })
